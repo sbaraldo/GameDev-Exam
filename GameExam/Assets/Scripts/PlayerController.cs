@@ -4,8 +4,9 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
-    public float speed = 5.0f;
+     public float speed = 10.0f;
     public float horizontalInput;
+    public float xRange = 5.0f;
 
     // Start is called before the first frame update
     void Start()
@@ -17,7 +18,18 @@ public class PlayerController : MonoBehaviour
     {
         //Playermovement
         transform.Translate(Vector3.right * horizontalInput * Time.fixedDeltaTime * speed);
-        transform.Translate(Vector3.forward * Time.fixedDeltaTime * speed);
+
+        //Keep the player on the ground so he don't fall of the map
+        if (transform.position.x < -xRange)
+        {
+            transform.position = new Vector3(-xRange, transform.position.y, transform.position.z);
+        }
+
+        if(transform.position.x > xRange)
+        {
+            transform.position = new Vector3(xRange, transform.position.y, transform.position.z);
+        }
+        
     }
 
     // Update is called once per frame
@@ -25,5 +37,14 @@ public class PlayerController : MonoBehaviour
     {
         //Player input
         horizontalInput = Input.GetAxis("Horizontal");
+    }
+
+    private void OnCollisionEnter( Collision collision)
+    {
+        // If player collide with the obstacle the player is dead
+        if (collision.gameObject.CompareTag("Obstacle"))
+        {
+            Destroy(gameObject);
+        }
     }
 }
