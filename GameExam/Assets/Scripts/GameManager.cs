@@ -11,8 +11,8 @@ public class GameManager : MonoBehaviour
     public TextMeshProUGUI scoreText;
     public Button restartButton;
     public GameObject titleScreen;
-    
-    
+    public bool isGameActive;
+    private int score;
 
     // Start is called before the first frame update
     void Start()
@@ -28,16 +28,19 @@ public class GameManager : MonoBehaviour
 
     public void GameOver()
     {
-        
+        restartButton.gameObject.SetActive(true);
+        gameOverText.gameObject.SetActive(true);
+        isGameActive = false;
     }
 
     public void RestartGame()
     {
-
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 
     public void StartGame()
     {
-        
+        isGameActive = true;
+        titleScreen.gameObject.SetActive(false);
     }
 }
