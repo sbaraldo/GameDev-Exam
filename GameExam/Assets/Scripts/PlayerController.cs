@@ -10,11 +10,13 @@ public class PlayerController : MonoBehaviour
     public ParticleSystem explosionParticle;
     public AudioClip crashSound;
     private AudioSource playerAudio;
+    private GameManager gameManager;
 
     // Start is called before the first frame update
     void Start()
     {
         playerAudio = GetComponent<AudioSource>();
+        gameManager = GameObject.Find("Game Manager").GetComponent<GameManager>();
     }
 
     void FixedUpdate()
@@ -50,6 +52,7 @@ public class PlayerController : MonoBehaviour
             Destroy(gameObject);
             AudioSource.PlayClipAtPoint(crashSound, transform.position);
             Instantiate(explosionParticle, transform.position, explosionParticle.transform.rotation);
+            gameManager.GameOver();
         }
     }
 }
