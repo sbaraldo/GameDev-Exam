@@ -11,14 +11,16 @@ public class PlayerController : MonoBehaviour
     public AudioClip crashSound;
     private AudioSource playerAudio;
     private GameManager gameManager;
-    private MoveBack cube;
+    public MoveBack obstacleSpeed;
+    public MoveBack gemSpeed;
 
     // Start is called before the first frame update
     void Start()
     {
         playerAudio = GetComponent<AudioSource>();
         gameManager = GameObject.Find("Game Manager").GetComponent<GameManager>();
-        cube = GameObject.Find("Obstacle").GetComponent<MoveBack>();
+        obstacleSpeed = GameObject.Find("Obstacle").GetComponent<MoveBack>();
+        gemSpeed = GameObject.Find("Gem").GetComponent<MoveBack>();
     }
 
     void FixedUpdate()
@@ -61,12 +63,15 @@ public class PlayerController : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
+        // if player collide with the gem the score will add and obstacle speed increase
+        // als speler tegen gem botst de score word toegevoegd en obstakel snelheid verhoogd
         if(other.gameObject.CompareTag("Gem"))
         {
             Destroy(other.gameObject);
             gameManager.score += 1;
             gameManager.UpdateScore(gameManager.score);
-            cube.speed += 2f;
+            obstacleSpeed.speed += 1f;
+            gemSpeed.speed += 1f;
         }
     }
 }
