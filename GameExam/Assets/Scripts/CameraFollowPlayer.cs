@@ -16,6 +16,7 @@ public class CameraFollowPlayer : MonoBehaviour
     void Update()
     {
         //offset the camera behind the player by adding to the player position
+        //camera afstand van de speler door aan de spelerpositie toe te voegen
         transform.position = player.transform.position + offset;
     }
 }
