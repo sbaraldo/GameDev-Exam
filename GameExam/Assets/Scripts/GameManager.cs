@@ -17,10 +17,13 @@ public class GameManager : MonoBehaviour
     private int obstacleSpawnIndex;
     Transform spawnPoint;
     private float obstacleSpawnRate = 1.0f;
-    private float gemSpawnRate = 1.0f;
+    private float gemSpawnRate = 2.0f;
     public GameObject gemPrefab;
     private int gemSpawnIndex;
-
+    public MoveBack gem;
+    public MoveBack obstacle;
+    private float resetSpeed = 15.0f;
+    
     // Start is called before the first frame update
     void Start()
     {
@@ -90,6 +93,8 @@ public class GameManager : MonoBehaviour
         isGameActive = true;
         titleScreen.gameObject.SetActive(false);
         score = 0;
+        gem.speed = resetSpeed;
+        obstacle.speed = resetSpeed;
         UpdateScore(0);
         StartCoroutine(SpawnObstacle());
         StartCoroutine(SpawnGem());
