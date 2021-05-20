@@ -1,26 +1,25 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
-    public float speed = 10.0f;
-    public float horizontalInput;
-    public float xRange = 5.0f;
+    private float speed = 5.0f;
+    private float horizontalInput;
+    private float xRange = 5.0f;
     public ParticleSystem explosionParticle;
     public AudioClip crashSound;
     private AudioSource playerAudio;
     private GameManager gameManager;
     public MoveBack obstacleSpeed;
     public MoveBack gemSpeed;
-
+    
     // Start is called before the first frame update
-    void Start()
+    void Awake()
     {
         playerAudio = GetComponent<AudioSource>();
         gameManager = GameObject.Find("Game Manager").GetComponent<GameManager>();
-        obstacleSpeed = GameObject.Find("Obstacle").GetComponent<MoveBack>();
-        gemSpeed = GameObject.Find("Gem").GetComponent<MoveBack>();
+        
     }
 
     void FixedUpdate()
@@ -54,9 +53,10 @@ public class PlayerController : MonoBehaviour
         // als speler tegen object botst de speler is dood, je hoort crashsound en ziet een particle
         if (collision.gameObject.CompareTag("Obstacle"))
         {
-            Destroy(gameObject);
+            collision.gameObject.SetActive(false);
             AudioSource.PlayClipAtPoint(crashSound, transform.position);
             Instantiate(explosionParticle, transform.position, explosionParticle.transform.rotation);
+            gameObject.SetActive(false);
             gameManager.GameOver();
         }
     }
@@ -67,7 +67,7 @@ public class PlayerController : MonoBehaviour
         // als speler tegen gem botst de score word toegevoegd en obstakel snelheid verhoogd
         if(other.gameObject.CompareTag("Gem"))
         {
-            Destroy(other.gameObject);
+            other.gameObject.SetActive(false);
             gameManager.score += 1;
             gameManager.UpdateScore(gameManager.score);
             obstacleSpeed.speed += 1f;
